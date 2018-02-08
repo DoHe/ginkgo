@@ -35,7 +35,7 @@ class ActionCard(Card):
             kind = TILE
 
         amount = 1
-        if self.target.value >= 7:
+        if isinstance(self.target.value, int) and self.target.value >= 7:
             amount = 2
 
         return (amount, kind)
@@ -139,34 +139,39 @@ def card_factory(target):
 class HeroCard(ActionCard):
 
     def __init__(self):
-        self.target = Tile(self.color, -1)
+        self.target = Tile(self.color, self.name)
 
 
 class Scientist(HeroCard):
     color = BLUE
     action = BUILD_UP
     starting = [RESOURCE]
+    name = 'S'
 
 
 class Planter(HeroCard):
     color = RED
     action = URBANIZE
     starting = [RESOURCE, VICTORY_POINT, TILE]
+    name = 'P'
 
 
 class Architect(HeroCard):
     color = YELLOW
     action = BUILD_UP
     starting = [RESOURCE, RESOURCE, VICTORY_POINT, TILE]
+    name = 'A'
 
 
 class Clerk(HeroCard):
     color = BLUE
     action = PLAN
     starting = [RESOURCE, RESOURCE, VICTORY_POINT]
+    name = 'C'
 
 
 class Mechanic(HeroCard):
     color = RED
     action = BUILD_UP
     starting = [TILE]
+    name = 'M'

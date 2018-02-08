@@ -14,7 +14,7 @@ class Tile():
         if self.owner is not None:
             owner_color = COLORS[self.owner.color]
 
-        return '|{color}{number}{reset}/{owner_color}{resources}{reset}|'.format(
+        return '|{color}{number:02d}{reset}/{owner_color}{resources}{reset}|'.format(
             color=COLORS[self.color],
             number=self.value,
             owner_color=owner_color,
@@ -36,7 +36,7 @@ class Marker():
         self.value = value
 
     def __str__(self):
-        return '({} {} {})'.format(COLORS[self.color], self.value, COLORS[RESET])
+        return '({} {}  {})'.format(COLORS[self.color], self.value, COLORS[RESET])
 
     def __repr__(self):
         return self.__str__()
@@ -50,7 +50,7 @@ class Space():
     value = None
 
     def __str__(self):
-        return '     '
+        return '      '
 
     def __repr__(self):
         return self.__str__()

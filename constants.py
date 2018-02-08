@@ -31,3 +31,9 @@ TILE = 'tile'
 PLAN = 'plan'
 URBANIZE = 'urbanize'
 BUILD_UP = 'build_up'
+
+COLOR_TO_KIND = {
+    RED: RESOURCE,
+    BLUE: TILE,
+    YELLOW: VICTORY_POINT
+}
