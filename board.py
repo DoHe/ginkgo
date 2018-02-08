@@ -50,9 +50,9 @@ class Board():
         self.new_tiles.append(new_tile)
 
         if move_y == 0:
-            self.tiles.insert(0, [Space()] * max(len(row) for row in self.tiles))
+            self.tiles.insert(0, [Space()] * len(self.tiles[1]))
         if move_y == len(self.tiles) - 1:
-            self.tiles.append([Space()] * max(len(row) for row in self.tiles))
+            self.tiles.append([Space()] * len(self.tiles[-1]))
         if move_x == 0:
             for row in self.tiles:
                 row.insert(0, Space())
