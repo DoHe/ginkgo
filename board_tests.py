@@ -2,8 +2,8 @@ import unittest
 from unittest.mock import patch
 
 import board
-from constants import RED, YELLOW, BLUE
-from pieces import Tile, Marker
+from constants import RED, YELLOW, BLUE, UP, RIGHT
+from pieces import Tile, Marker, Space
 
 
 class BoardTests(unittest.TestCase):
@@ -38,6 +38,17 @@ class BoardTests(unittest.TestCase):
                 _, idx_x, idx_y = self.board.get_tile(search_tile)
                 neighbors = list(self.board.get_neighbors(idx_x, idx_y))
                 self.assertListEqual(neighbors, expected_neighbors)
+
+    def test_urbanize(self):
+        self.board.urbanize(Marker('A'), UP, Tile(YELLOW, 1))
+        self.board.urbanize(Marker('A'), UP, Tile(YELLOW, 1))
+        self.board.urbanize(Marker('A'), UP, Tile(YELLOW, 1))
+        self.assertListEqual(self.board.tiles[0], [Space()] * 7)
+        self.board.urbanize(Marker('C'), RIGHT, Tile(YELLOW, 1))
+        self.assertListEqual(self.board.tiles[0], [Space()] * 7)
+        self.assertEqual(self.board.tiles[4][5], Marker('C'))
+        self.assertEqual(self.board.tiles[3][5], Space())
+        self.assertEqual(self.board.tiles[4][6], Space())
 
 
 if __name__ == '__main__':

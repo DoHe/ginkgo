@@ -50,15 +50,18 @@ class Board():
         self.new_tiles.append(new_tile)
 
         if move_y == 0:
-            self.tiles.insert(0, [Space()] * (move_x + 1))
+            self.tiles.insert(0, [Space()] * max(len(row) for row in self.tiles))
         if move_y == len(self.tiles) - 1:
-            self.tiles.append([Space()] * (move_x + 1))
+            self.tiles.append([Space()] * max(len(row) for row in self.tiles))
         if move_x == 0:
             for row in self.tiles:
                 row.insert(0, Space())
         if move_x == len(self.tiles[move_y]) - 1:
-            for row in self.tiles:
-                row.append(Space())
+            current_row = self.tiles[move_y]
+            current_row.append(Space())
+            for other_row in (self.tiles[move_y - 1], self.tiles[move_y + 1]):
+                if len(other_row) < len(current_row):
+                    other_row.append(Space())
 
         changes = []
         for neighbor, neighbor_idx_x, neighbor_idx_y in self.get_neighbors(idx_x, idx_y):
