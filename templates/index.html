@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Ginkgopolis Online</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Play Ginkgopolis online"/>
+    <meta name="keywords" content="Ginkgopolis, play, online, game"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/furtive/2.3.0/furtive.min.css"/>
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#ffffff">
+
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+</head>
+<body>
+<div class="py2">
+    <h1 class="h2 txt--center">
+        Play a round of Gingkopolis
+    </h1>
+    <section class="measure p2">
+        <div class="js-board"></div>
+    </section>
+</div>
+</body>
+</html>
