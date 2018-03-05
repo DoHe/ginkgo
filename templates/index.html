@@ -6,6 +6,7 @@
     <meta name="description" content="Play Ginkgopolis online"/>
     <meta name="keywords" content="Ginkgopolis, play, online, game"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/furtive/2.3.0/furtive.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"/>
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
@@ -21,8 +22,9 @@
     <h1 class="h2 txt--center">
         Play a round of Gingkopolis
     </h1>
+    <div class="js-play-button btn--green">Play!</div>
     <section class="measure p2">
-        <div class="js-board"></div>
+        <div class="board js-board"></div>
     </section>
 </div>
 </body>

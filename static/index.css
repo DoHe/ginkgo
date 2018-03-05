@@ -1,0 +1,31 @@
+.rect {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+}
+
+.circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+}
+
+.bg--yellow {
+    background: #FFD700;
+}
+
+.board {
+  display: grid;
+  grid-auto-columns: 50px;
+  grid-auto-rows: 50px;
+  grid-gap: 10px;
+}
+
+.fnt--gray {
+    color: #808080;
+}

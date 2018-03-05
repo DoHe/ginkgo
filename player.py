@@ -68,6 +68,9 @@ class Player(abc.ABC):
     def __hash__(self):
         return hash(self.name)
 
+    def __lt__(self, other):
+        return self.name < other.name
+
     def __str__(self):
         return "{}_{}_{}:\ntiles: {}\nresources: {}\nvictory points: {}\nhand: {}\ncards: {}".format(
             COLORS[self.color],

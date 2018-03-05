@@ -60,6 +60,7 @@ class GameController():
             print(player)
             print()
         print("======================================")
+        return { player.name: action for player, action in planned_actions.items()}
 
     def _execute_planned_actions(self, planned_actions):
         for player in (self.players[self.first_player:] + self.players[:self.first_player]):

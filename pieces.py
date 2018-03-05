@@ -28,7 +28,7 @@ class Tile():
     def __eq__(self, other):
         return self.color == other.color and self.value == other.value
 
-    def json(self):
+    def toJSON(self):
         owner_color = 'gray'
         if self.owner:
             owner_color = self.owner.color
@@ -52,7 +52,7 @@ class Marker():
     def __eq__(self, other):
         return hasattr(other, 'value') and self.value == other.value
 
-    def json(self):
+    def toJSON(self):
         return {'name': 'marker', 'value': self.value}
 
 
@@ -69,5 +69,5 @@ class Space():
     def __eq__(self, other):
         return isinstance(other, Space)
 
-    def json(self):
+    def toJSON(self):
         return {'name': 'space'}

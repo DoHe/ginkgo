@@ -1,11 +1,16 @@
+from json import JSONEncoder
+
 from constants import VICTORY_POINT, RED, RESOURCE, TILE, BLUE, YELLOW, PLAN, URBANIZE, BUILD_UP, COLORS, RESET
 from pieces import Tile
 
 
-class Card:
+class Card(JSONEncoder):
 
     def __init__(self, target):
         self.target = target
+
+    def default(self, o):
+        return self.__str__()
 
     def __str__(self):
         return '/{}{}{}\\'.format(COLORS[self.target.color], self.target.value, COLORS[RESET])

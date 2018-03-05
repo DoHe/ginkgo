@@ -104,8 +104,8 @@ class Board():
             neighbor_idx_y = idx_y + neighbor_y_diff
             yield self.tiles[neighbor_idx_y][neighbor_idx_x], neighbor_idx_x, neighbor_idx_y
 
-    def json(self):
-        return [[piece.json() for piece in row] for row in self.tiles]
+    def toJSON(self):
+        return [[piece.toJSON() for piece in row] for row in self.tiles]
 
     def __str__(self):
         return pformat(self.tiles, indent=4, width=400)
