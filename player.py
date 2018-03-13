@@ -1,4 +1,5 @@
 import abc
+import asyncio
 import random
 
 from cards import ActionCard
@@ -21,7 +22,7 @@ class Player(abc.ABC):
         self.last_move = None
 
     @abc.abstractmethod
-    def plan_action(self):
+    async def plan_action(self):
         pass
 
     def action_executed(self, changes):
@@ -46,7 +47,11 @@ class Player(abc.ABC):
                 for _ in range(amount):
                     tile = self.game_controller.draw_tile()
                     if tile:
-                        self.tiles.append(tile)
+                        self.give_tile(tile)
+
+    def give_tile(self, tile):
+        tile.owner = self
+        self.tiles.append(tile)
 
     def pay_for_move(self, move, card, extra):
         self.last_card = card
@@ -151,3 +156,22 @@ class RandomPlayer(Player):
                     }
 
                 return None
+
+
+class WebPlayer(Player):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.receiver = None
+
+    async def plan_action(self):
+        self.receiver = asyncio.Future()
+        await asyncio.wait([self.receiver])
+        print(self.receiver.result())
+        card = random.choice(self.hand)
+        return self, PLAN, card, {'target_tile': card.target, 'wish': RESOURCE}
+
+    async def received_move(self, move):
+        while self.receiver is None or self.receiver.done():
+            await asyncio.sleep(0.1)
+        self.receiver.set_result(move)

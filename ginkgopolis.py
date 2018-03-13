@@ -36,7 +36,7 @@ class GameController():
                     elif starter == RESOURCE:
                         player.resources += 1
                     elif starter == TILE:
-                        player.tiles.append(self.draw_tile())
+                        player.give_tile(self.draw_tile())
         self.draw_cards()
         self.first_player = random.randrange(len(self.players) + 1)
 
@@ -60,7 +60,7 @@ class GameController():
             print(player)
             print()
         print("======================================")
-        return { player.name: action for player, action in planned_actions.items()}
+        return {player.name: action for player, action in planned_actions.items()}
 
     def _execute_planned_actions(self, planned_actions):
         for player in (self.players[self.first_player:] + self.players[:self.first_player]):

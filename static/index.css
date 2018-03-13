@@ -1,22 +1,22 @@
 .rect {
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 50px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
 }
 
 .circle {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
 }
 
 .bg--yellow {
-    background: #FFD700;
+  background: #FFD700;
 }
 
 .board {
@@ -27,10 +27,16 @@
 }
 
 .fnt--gray {
-    color: #808080;
+  color: #808080;
 }
 
 .game-log {
-    height: 300px;
-    overflow: scroll;
+  height: 300px;
+  overflow: scroll;
+}
+
+.btn--green:disabled {
+  color: #c5c5c5;
+  background: #e7e7e7;
+  border: 2px solid #e7e7e7;
 }

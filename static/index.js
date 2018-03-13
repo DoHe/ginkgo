@@ -14,8 +14,8 @@ function formatPiece(piece_data, column, row) {
     return `<div class="circle bg--green" ${gridStyle(column, row)}>${value}</div>`;
   } else if (name === 'tile') {
     return `<div class="rect bg--${color}" ${gridStyle(column, row)}>
-                    ${value}/<span class="fnt--${owner_color}">${resources}</span>
-                </div>`;
+                ${value}/<span class="fnt--${owner_color}">${resources}</span>
+            </div>`;
   }
   return '';
 }
@@ -56,13 +56,22 @@ function formatMove(move) {
 }
 
 function play() {
+  const playButton = document.querySelector('.js-play-button');
+  playButton.disabled = true;
   window.fetch('/play').then((response) => {
     response.json().then((data) => {
       const moves = Object.keys(data).map(player => `${player}: ${formatMove(data[player])}`).join('</br>');
       const gameLog = document.querySelector('.js-game-log');
       gameLog.innerHTML = `${moves} </br></br> ${gameLog.innerHTML}`;
       showBoard();
+      playButton.disabled = false;
     });
+  });
+
+  window.fetch('/make_move/Lisa', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ a: 'test' }),
   });
 }
 
