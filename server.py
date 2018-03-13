@@ -1,8 +1,9 @@
-from quart import Quart, render_template, jsonify
+from quart import Quart, render_template
 
 from constants import ORANGE, WHITE
 from ginkgopolis import GameController
 from player import RandomPlayer
+from server_helpers import json_response
 
 app = Quart(__name__, static_url_path='/static')
 
@@ -17,12 +18,14 @@ def index():
 
 @app.route("/board")
 def board():
-    return jsonify(GAME_CONTROLLER.board.json())
+    return json_response(GAME_CONTROLLER.board, app)
+
 
 @app.route("/play")
 async def play():
     planned = await GAME_CONTROLLER.play_round()
-    return jsonify(planned)
+    return json_response(planned, app)
+
 
 if __name__ == '__main__':
     app.run()

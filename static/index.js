@@ -37,10 +37,32 @@ function showBoard() {
     })
 }
 
+function formatMove(move) {
+    let kind = move[0];
+    const details = move[1];
+    let meta = '';
+    if (kind === 'urbanize') {
+        meta = `on ${details.marker.value}, moving to ${details.direction}`;
+    } else if (kind === 'build_up') {
+        kind = 'build';
+        meta = `on top of ${details.target_tile.color} ${details.target_tile.value},
+                with ${details.new_tile.color} ${details.new_tile.value}`;
+    } else if (kind === 'plan') {
+        if (details.target_tile.name === 'marker') {
+            meta = `on ${details.target_tile.value} for ${details.wish}`;
+        } else {
+            meta = `on ${details.target_tile.color} ${details.target_tile.value}`
+        }
+    }
+    return `${kind} ${meta}`;
+}
+
 function play() {
     window.fetch('/play').then((response) => {
         response.json().then((data) => {
-            console.log(data);
+            const moves = Object.keys(data).map(player => `${player}: ${formatMove(data[player])}`).join('</br>');
+            const gameLog = document.querySelector('.js-game-log');
+            gameLog.innerHTML = `${moves} </br></br> ${gameLog.innerHTML}`;
             showBoard();
         });
     });
