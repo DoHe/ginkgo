@@ -15,7 +15,7 @@
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
     <meta name="theme-color" content="#ffffff">
 
-    <script src="{{ url_for('static', filename='index.js') }}"></script>
+    <script src="{{ url_for('static', filename='bundle.js') }}"></script>
 </head>
 <body>
 <div class="py2">
@@ -27,6 +27,9 @@
     </div>
     <section class="measure p2">
         <div class="board js-board"></div>
+    </section>
+    <section class="measure p2">
+        <div class="player js-player"></div>
     </section>
     <section class="measure p2">
         <div class="js-game-log game-log bg--off-white">

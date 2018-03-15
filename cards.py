@@ -18,6 +18,11 @@ class Card(JSONEncoder):
     def __repr__(self):
         return self.__str__()
 
+    def toJSON(self):
+        return {
+            'target': self.target
+        }
+
 
 class ActionCard(Card):
 
@@ -145,6 +150,14 @@ class HeroCard(ActionCard):
 
     def __init__(self):
         self.target = Tile(self.color, self.name)
+
+    def toJSON(self):
+        return {
+            'color': self.color,
+            'action': self.action,
+            'starting': self.starting,
+            'name': self.name
+        }
 
 
 class Scientist(HeroCard):

@@ -37,5 +37,13 @@ async def make_move(player):
     return "Player not found", 404
 
 
+@app.route("/player/<player>")
+async def player(player):
+    for p in PLAYERS:
+        if player == p.name and isinstance(p, WebPlayer):
+            return json_response(p, app)
+    return "Player not found", 404
+
+
 if __name__ == '__main__':
     app.run()

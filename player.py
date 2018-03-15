@@ -4,7 +4,7 @@ import random
 
 from cards import ActionCard
 from constants import URBANIZE, BUILD_UP, PLAN, RESOURCE, TILE, LEFT, DOWN, RIGHT, UP, VICTORY_POINT, COLORS, RESET
-from pieces import Space, Marker
+from pieces import Space, Marker, Tile
 
 
 class Player(abc.ABC):
@@ -91,6 +91,17 @@ class Player(abc.ABC):
     def __repr__(self):
         return self.__str__()
 
+    def toJSON(self):
+        return {
+            'name': self.name,
+            'color': self.color,
+            'hand': self.hand,
+            'cards': self.cards,
+            'tiles': self.tiles,
+            'resources': self.resources,
+            'victory_points': self.victory_points
+        }
+
 
 class RandomPlayer(Player):
     possible_moves = [PLAN, BUILD_UP, URBANIZE]
@@ -167,9 +178,17 @@ class WebPlayer(Player):
     async def plan_action(self):
         self.receiver = asyncio.Future()
         await asyncio.wait([self.receiver])
-        print(self.receiver.result())
-        card = random.choice(self.hand)
-        return self, PLAN, card, {'target_tile': card.target, 'wish': RESOURCE}
+        move = self.receiver.result()
+        if 'color' in move['cardTarget']:
+            target = Tile(**move['cardTarget'])
+        else:
+            target = Marker(**move['cardTarget'])
+        for card in self.hand:
+            if card.target == target:
+                break
+
+        move['extra']['target_tile'] = card.target
+        return self, move['kind'], card, move['extra']
 
     async def received_move(self, move):
         while self.receiver is None or self.receiver.done():
