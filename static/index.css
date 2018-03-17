@@ -6,9 +6,20 @@
   line-height: 50px;
 }
 
-.tile-container > * {
+.piece-container {
+  max-width: 300px;
+  text-align: left;
+}
+
+.piece-container > * {
   display: inline-block;
   margin-bottom: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.player {
+  display: inline-block;
   margin-right: 5px;
   margin-left: 5px;
 }
@@ -26,11 +37,18 @@
   background: #FFD700;
 }
 
+.fnt--yellow {
+  color: #FFD700;
+}
+
 .board {
   display: grid;
+  justify-content: center;
   grid-auto-columns: 50px;
   grid-auto-rows: 50px;
   grid-gap: 10px;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .fnt--gray {
@@ -42,8 +60,23 @@
   overflow: scroll;
 }
 
+.move-input {
+  display: inline-block;
+}
+
+.move-input-option {
+  display: inline-block;
+}
+
 .btn--green:disabled {
   color: #c5c5c5;
   background: #e7e7e7;
   border: 2px solid #e7e7e7;
+}
+
+section {
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }

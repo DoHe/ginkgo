@@ -1,3 +1,5 @@
+const moveKinds = ['plan', 'urbanize', 'build_up'];
+
 function isSpace(pieceData) {
   return pieceData.name === 'space';
 }
@@ -25,10 +27,7 @@ function formatTile(tileData) {
 }
 
 function formatCard(cardData) {
-  console.log(cardData.target);
-  console.log(cardData.target.color);
   const textClass = cardData.target.color ? `fnt--${cardData.target.color}` : '';
-  console.log(textClass);
   return `<div class="rect bg--green ${textClass}">${cardData.target.value}</div>`;
 }
 
@@ -67,13 +66,52 @@ function formatMoves(moveData) {
   return Object.keys(moveData).map(player => `${player}: ${formatMove(moveData[player])}`).join('</br>');
 }
 
+function moveOptions() {
+  return moveKinds.map(kind => `<option value="${kind}">${kind}</option>`);
+}
+
+function pieceOptions(pieces) {
+  return pieces.map((piece) => {
+    const value = piece.value || piece.target.value;
+    const color = piece.color || piece.target.color;
+    return `<option value="${value}_${color}">${value}${color ? ` (${color})` : ''}</option>`;
+  }).join('\n');
+}
+
+function formatMoveInput(playerData) {
+  return `<div class="move-input">
+            <div class="move-input-option">
+              <span>Move</span>
+              <select class="js-move-input">
+                ${moveOptions()}
+              </select>
+            </div>
+            <div class="move-input-option">
+              <span>Card</span>
+              <select class="js-card-input">
+                ${pieceOptions(playerData.hand)}
+              </select>
+            </div>
+            <div class="move-input-option">
+              <span>Tile</span>
+              <select class="js-tile-input">
+                ${pieceOptions(playerData.tiles)}
+              </select>
+            </div>
+            <button class="js-execute-button btn--green">Execute</button>
+          </div>`;
+}
+
 function formatPlayer(playerData) {
-  console.log(playerData.hand);
-  return `<span class="fnt--${playerData.color}">${playerData.name}</span>: 
-    <span class="fnt--orange">${playerData.victory_points} VPs</span>,
-    <span class="fnt--red">${playerData.resources} resources</span>
-    <div class="tile-container">${playerData.tiles.map(formatTile).join('')}</div>
-    <div class="tile-container">${playerData.hand.map(formatCard).join('')}</div>`;
+  let player = `<span class="fnt--${playerData.color}">${playerData.name}</span>: 
+                <span class="fnt--orange">${playerData.victory_points} VPs</span>,
+                <span class="fnt--red">${playerData.resources} resources</span>
+                <div class="piece-container">${playerData.tiles.map(formatTile).join('')}</div>
+                <div class="piece-container">${playerData.hand.map(formatCard).join('')}</div>`;
+  if (playerData.is_web) {
+    player += formatMoveInput(playerData);
+  }
+  return player;
 }
 
 module.exports = { formatMoves, formatBoard, formatPlayer };

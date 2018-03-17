@@ -8,17 +8,73 @@ function showBoard() {
   });
 }
 
-function showPlayer() {
-  window.fetch('/player/Lisa').then((response) => {
+function extraForMove(kind, cardValue, cardColor, tileValue, tileColor) {
+  if (kind === 'plan') {
+    return {
+      target_tile: { value: cardValue, color: cardColor },
+      wish: 'resource',
+    };
+  }
+  if (kind === 'urbanize') {
+    return {
+      marker: cardValue,
+      direction: 'UP',
+      new_tile: { value: tileValue, color: tileColor },
+    };
+  }
+  if (kind === 'build_up') {
+    return {
+      target_tile: { value: cardValue, color: cardColor },
+      new_tile: { value: tileValue, color: tileColor },
+    };
+  }
+}
+
+function executeMove(event) {
+  const inputContainer = event.target.parentNode;
+  const kind = inputContainer.querySelector('.js-move-input').value;
+  const [cardValue, cardColor] = inputContainer.querySelector('.js-card-input').value.split('_');
+  const [tileValue, tileColor] = inputContainer.querySelector('.js-tile-input').value.split('_');
+  window.fetch('/make_move/Lisa', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      kind,
+      cardTarget: {
+        value: cardValue,
+        color: cardColor,
+      },
+      extra: extraForMove(kind, cardValue, cardColor, tileValue, tileColor),
+    }),
+  });
+}
+
+function showPlayer(playerName) {
+  window.fetch(`/players/${playerName}`).then((response) => {
     response.json().then((data) => {
-      document.querySelector('.js-player').innerHTML = formatPlayer(data);
+      const player = document.querySelector(`.js-player[data-player-name=${playerName}]`);
+      if (player) {
+        player.innerHTML = formatPlayer(data);
+      } else {
+        document.querySelector('.js-players').innerHTML += `<div class="player js-player" data-player-name="${data.name}">${formatPlayer(data)}</div>`;
+      }
+      const executeButton = document.querySelector(`.js-player[data-player-name=${playerName}] .js-execute-button`);
+      if (executeButton) {
+        executeButton.addEventListener('click', executeMove);
+      }
     });
+  });
+}
+
+function showPlayers() {
+  window.fetch('/players').then((response) => {
+    response.json().then(players => players.sort().forEach(showPlayer));
   });
 }
 
 function update() {
   showBoard();
-  showPlayer();
+  showPlayers();
 }
 
 function play() {
@@ -31,20 +87,6 @@ function play() {
       update();
       playButton.disabled = false;
     });
-  });
-
-  window.fetch('/make_move/Lisa', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      kind: 'plan',
-      cardTarget: {
-        value: 'A',
-      },
-      extra: {
-        wish: 'resource',
-      },
-    }),
   });
 }
 

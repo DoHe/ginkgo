@@ -99,7 +99,8 @@ class Player(abc.ABC):
             'cards': self.cards,
             'tiles': self.tiles,
             'resources': self.resources,
-            'victory_points': self.victory_points
+            'victory_points': self.victory_points,
+            'is_web': isinstance(self, WebPlayer)
         }
 
 
@@ -179,7 +180,7 @@ class WebPlayer(Player):
         self.receiver = asyncio.Future()
         await asyncio.wait([self.receiver])
         move = self.receiver.result()
-        if 'color' in move['cardTarget']:
+        if move['cardTarget'].get('color') not in [None, 'undefined']:
             target = Tile(**move['cardTarget'])
         else:
             target = Marker(**move['cardTarget'])
@@ -187,7 +188,6 @@ class WebPlayer(Player):
             if card.target == target:
                 break
 
-        move['extra']['target_tile'] = card.target
         return self, move['kind'], card, move['extra']
 
     async def received_move(self, move):

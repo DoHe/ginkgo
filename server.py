@@ -37,10 +37,15 @@ async def make_move(player):
     return "Player not found", 404
 
 
-@app.route("/player/<player>")
+@app.route("/players")
+async def players():
+    return json_response([p.name for p in PLAYERS], app)
+
+
+@app.route("/players/<player>")
 async def player(player):
     for p in PLAYERS:
-        if player == p.name and isinstance(p, WebPlayer):
+        if player == p.name:
             return json_response(p, app)
     return "Player not found", 404
 

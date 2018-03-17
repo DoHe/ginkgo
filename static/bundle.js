@@ -1,4 +1,6 @@
 (function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
+const moveKinds = ['plan', 'urbanize', 'build_up'];
+
 function isSpace(pieceData) {
   return pieceData.name === 'space';
 }
@@ -26,10 +28,7 @@ function formatTile(tileData) {
 }
 
 function formatCard(cardData) {
-  console.log(cardData.target);
-  console.log(cardData.target.color);
   const textClass = cardData.target.color ? `fnt--${cardData.target.color}` : '';
-  console.log(textClass);
   return `<div class="rect bg--green ${textClass}">${cardData.target.value}</div>`;
 }
 
@@ -65,13 +64,52 @@ function formatMoves(moveData) {
   return Object.keys(moveData).map(player => `${player}: ${formatMove(moveData[player])}`).join('</br>');
 }
 
+function moveOptions() {
+  return moveKinds.map(kind => `<option value="${kind}">${kind}</option>`);
+}
+
+function pieceOptions(pieces) {
+  return pieces.map(piece => {
+    const value = piece.value || piece.target.value;
+    const color = piece.color || piece.target.color;
+    return `<option value="${value}_${color}">${value}${color ? ` (${color})` : ''}</option>`;
+  }).join('\n');
+}
+
+function formatMoveInput(playerData) {
+  return `<div class="move-input">
+            <div class="move-input-option">
+              <span>Move</span>
+              <select class="js-move-input">
+                ${moveOptions()}
+              </select>
+            </div>
+            <div class="move-input-option">
+              <span>Card</span>
+              <select class="js-card-input">
+                ${pieceOptions(playerData.hand)}
+              </select>
+            </div>
+            <div class="move-input-option">
+              <span>Tile</span>
+              <select class="js-tile-input">
+                ${pieceOptions(playerData.tiles)}
+              </select>
+            </div>
+            <button class="js-execute-button btn--green">Execute</button>
+          </div>`;
+}
+
 function formatPlayer(playerData) {
-  console.log(playerData.hand);
-  return `<span class="fnt--${playerData.color}">${playerData.name}</span>: 
-    <span class="fnt--orange">${playerData.victory_points} VPs</span>,
-    <span class="fnt--red">${playerData.resources} resources</span>
-    <div class="tile-container">${playerData.tiles.map(formatTile).join('')}</div>
-    <div class="tile-container">${playerData.hand.map(formatCard).join('')}</div>`;
+  let player = `<span class="fnt--${playerData.color}">${playerData.name}</span>: 
+                <span class="fnt--orange">${playerData.victory_points} VPs</span>,
+                <span class="fnt--red">${playerData.resources} resources</span>
+                <div class="piece-container">${playerData.tiles.map(formatTile).join('')}</div>
+                <div class="piece-container">${playerData.hand.map(formatCard).join('')}</div>`;
+  if (playerData.is_web) {
+    player += formatMoveInput(playerData);
+  }
+  return player;
 }
 
 module.exports = { formatMoves, formatBoard, formatPlayer };
@@ -87,17 +125,73 @@ function showBoard() {
   });
 }
 
-function showPlayer() {
-  window.fetch('/player/Lisa').then(response => {
+function extraForMove(kind, cardValue, cardColor, tileValue, tileColor) {
+  if (kind === 'plan') {
+    return {
+      target_tile: { value: cardValue, color: cardColor },
+      wish: 'resource'
+    };
+  }
+  if (kind === 'urbanize') {
+    return {
+      marker: cardValue,
+      direction: 'UP',
+      new_tile: { value: tileValue, color: tileColor }
+    };
+  }
+  if (kind === 'build_up') {
+    return {
+      target_tile: { value: cardValue, color: cardColor },
+      new_tile: { value: tileValue, color: tileColor }
+    };
+  }
+}
+
+function executeMove(event) {
+  const inputContainer = event.target.parentNode;
+  const kind = inputContainer.querySelector('.js-move-input').value;
+  const [cardValue, cardColor] = inputContainer.querySelector('.js-card-input').value.split('_');
+  const [tileValue, tileColor] = inputContainer.querySelector('.js-tile-input').value.split('_');
+  window.fetch('/make_move/Lisa', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      kind,
+      cardTarget: {
+        value: cardValue,
+        color: cardColor
+      },
+      extra: extraForMove(kind, cardValue, cardColor, tileValue, tileColor)
+    })
+  });
+}
+
+function showPlayer(playerName) {
+  window.fetch(`/players/${playerName}`).then(response => {
     response.json().then(data => {
-      document.querySelector('.js-player').innerHTML = formatPlayer(data);
+      const player = document.querySelector(`.js-player[data-player-name=${playerName}]`);
+      if (player) {
+        player.innerHTML = formatPlayer(data);
+      } else {
+        document.querySelector('.js-players').innerHTML += `<div class="player js-player" data-player-name="${data.name}">${formatPlayer(data)}</div>`;
+      }
+      const executeButton = document.querySelector(`.js-player[data-player-name=${playerName}] .js-execute-button`);
+      if (executeButton) {
+        executeButton.addEventListener('click', executeMove);
+      }
     });
+  });
+}
+
+function showPlayers() {
+  window.fetch('/players').then(response => {
+    response.json().then(players => players.sort().forEach(showPlayer));
   });
 }
 
 function update() {
   showBoard();
-  showPlayer();
+  showPlayers();
 }
 
 function play() {
@@ -110,20 +204,6 @@ function play() {
       update();
       playButton.disabled = false;
     });
-  });
-
-  window.fetch('/make_move/Lisa', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      kind: 'plan',
-      cardTarget: {
-        value: 'A'
-      },
-      extra: {
-        wish: 'resource'
-      }
-    })
   });
 }
 
