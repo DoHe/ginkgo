@@ -9,25 +9,29 @@ function showBoard() {
 }
 
 function extraForMove(kind, cardValue, cardColor, tileValue, tileColor) {
+  const parsedTileValue = parseInt(tileValue, 10);
+  const parsedCardValue = parseInt(cardValue, 10);
   if (kind === 'plan') {
     return {
-      target_tile: { value: cardValue, color: cardColor },
+      target_tile: { value: parsedCardValue, color: cardColor },
       wish: 'resource',
     };
   }
   if (kind === 'urbanize') {
     return {
       marker: cardValue,
-      direction: 'UP',
-      new_tile: { value: tileValue, color: tileColor },
+      direction: 'up',
+      new_tile: { value: parsedTileValue, color: tileColor },
     };
   }
   if (kind === 'build_up') {
     return {
-      target_tile: { value: cardValue, color: cardColor },
-      new_tile: { value: tileValue, color: tileColor },
+      target_tile: { value: parsedCardValue, color: cardColor },
+      new_tile: { value: parsedTileValue, color: tileColor },
     };
   }
+
+  return {};
 }
 
 function executeMove(event) {
@@ -35,15 +39,16 @@ function executeMove(event) {
   const kind = inputContainer.querySelector('.js-move-input').value;
   const [cardValue, cardColor] = inputContainer.querySelector('.js-card-input').value.split('_');
   const [tileValue, tileColor] = inputContainer.querySelector('.js-tile-input').value.split('_');
+  const cardTarget = { value: cardValue };
+  if (cardColor !== 'undefined') {
+    cardTarget.color = cardColor;
+  }
   window.fetch('/make_move/Lisa', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       kind,
-      cardTarget: {
-        value: cardValue,
-        color: cardColor,
-      },
+      cardTarget,
       extra: extraForMove(kind, cardValue, cardColor, tileValue, tileColor),
     }),
   });
@@ -86,6 +91,7 @@ function play() {
       gameLog.innerHTML = `${formatMoves(data)} </br></br> ${gameLog.innerHTML}`;
       update();
       playButton.disabled = false;
+      play();
     });
   });
 }
@@ -93,4 +99,5 @@ function play() {
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.js-play-button').addEventListener('click', play);
   update();
+  play();
 });

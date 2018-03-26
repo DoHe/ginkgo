@@ -107,9 +107,6 @@ class Player(abc.ABC):
 class RandomPlayer(Player):
     possible_moves = [PLAN, BUILD_UP, URBANIZE]
 
-    def __init__(self, name, color):
-        super().__init__(name, color)
-
     async def plan_action(self):
         possible_moves = self.possible_moves[:]
         random.shuffle(self.hand)
@@ -174,10 +171,20 @@ class WebPlayer(Player):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.receiver = None
+        self.receiver = asyncio.Future()
+
+    def parse_extra(self, extra):
+        if 'target_tile' in extra:
+            extra['target_tile'] = Tile(**extra['target_tile'])
+
+        if 'new_tile' in extra:
+            extra['new_tile'] = Tile(**extra['new_tile'])
+
+        if 'marker' in extra:
+            extra['marker'] = Marker(extra['marker'])
+        return extra
 
     async def plan_action(self):
-        self.receiver = asyncio.Future()
         await asyncio.wait([self.receiver])
         move = self.receiver.result()
         if move['cardTarget'].get('color') not in [None, 'undefined']:
@@ -188,9 +195,10 @@ class WebPlayer(Player):
             if card.target == target:
                 break
 
-        return self, move['kind'], card, move['extra']
+        self.receiver = asyncio.Future()
+        return self, move['kind'], card, self.parse_extra(move['extra'])
 
     async def received_move(self, move):
-        while self.receiver is None or self.receiver.done():
+        while self.receiver.done():
             await asyncio.sleep(0.1)
         self.receiver.set_result(move)

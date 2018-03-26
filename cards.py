@@ -1,10 +1,8 @@
-from json import JSONEncoder
-
 from constants import VICTORY_POINT, RED, RESOURCE, TILE, BLUE, YELLOW, PLAN, URBANIZE, BUILD_UP, COLORS, RESET
 from pieces import Tile
 
 
-class Card(JSONEncoder):
+class Card:
 
     def __init__(self, target):
         self.target = target
@@ -17,6 +15,9 @@ class Card(JSONEncoder):
 
     def __repr__(self):
         return self.__str__()
+
+    def __eq__(self, other):
+        return self.target == other.target
 
     def toJSON(self):
         return {
