@@ -22,11 +22,10 @@
     <h1 class="h2 txt--center">
         Play a round of Gingkopolis
     </h1>
-    <div class="txt--center">
-        <button class="js-play-button btn--green">Play round</button>
-    </div>
     <section>
-        <div class="board js-board"></div>
+        <div id="board">
+            <board :tiles="tiles"></board>
+        </div>
     </section>
     <section>
         <div class="players-container js-players"></div>

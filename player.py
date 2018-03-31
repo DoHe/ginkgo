@@ -175,7 +175,10 @@ class WebPlayer(Player):
 
     def parse_extra(self, extra):
         if 'target_tile' in extra:
-            extra['target_tile'] = Tile(**extra['target_tile'])
+            if extra['target_tile'].get('color'):
+                extra['target_tile'] = Tile(**extra['target_tile'])
+            else:
+                extra['target_tile'] = Marker(**extra['target_tile'])
 
         if 'new_tile' in extra:
             extra['new_tile'] = Tile(**extra['new_tile'])
@@ -187,7 +190,7 @@ class WebPlayer(Player):
     async def plan_action(self):
         await asyncio.wait([self.receiver])
         move = self.receiver.result()
-        if move['cardTarget'].get('color') not in [None, 'undefined']:
+        if move['cardTarget'].get('color'):
             target = Tile(**move['cardTarget'])
         else:
             target = Marker(**move['cardTarget'])

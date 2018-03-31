@@ -1,19 +1,27 @@
-const { formatMoves, formatBoard, formatPlayer } = require('./helpers/formatting');
+const Vue = require('vue');
+
+const board = require('./components/board.vue');
+const { formatMoves, formatPlayer } = require('./helpers/formatting');
+
+const boardView = new Vue({
+  data: {
+    tiles: [],
+  },
+  components: { board },
+});
 
 function showBoard() {
   window.fetch('/board').then((response) => {
     response.json().then((data) => {
-      document.querySelector('.js-board').innerHTML = formatBoard(data);
+      boardView.tiles = data;
     });
   });
 }
 
 function extraForMove(kind, cardValue, cardColor, tileValue, tileColor) {
-  const parsedTileValue = parseInt(tileValue, 10);
-  const parsedCardValue = parseInt(cardValue, 10);
   if (kind === 'plan') {
     return {
-      target_tile: { value: parsedCardValue, color: cardColor },
+      target_tile: { value: cardValue, color: cardColor },
       wish: 'resource',
     };
   }
@@ -21,13 +29,13 @@ function extraForMove(kind, cardValue, cardColor, tileValue, tileColor) {
     return {
       marker: cardValue,
       direction: 'up',
-      new_tile: { value: parsedTileValue, color: tileColor },
+      new_tile: { value: tileValue, color: tileColor },
     };
   }
   if (kind === 'build_up') {
     return {
-      target_tile: { value: parsedCardValue, color: cardColor },
-      new_tile: { value: parsedTileValue, color: tileColor },
+      target_tile: { value: cardValue, color: cardColor },
+      new_tile: { value: tileValue, color: tileColor },
     };
   }
 
@@ -37,19 +45,18 @@ function extraForMove(kind, cardValue, cardColor, tileValue, tileColor) {
 function executeMove(event) {
   const inputContainer = event.target.parentNode;
   const kind = inputContainer.querySelector('.js-move-input').value;
-  const [cardValue, cardColor] = inputContainer.querySelector('.js-card-input').value.split('_');
+  let [cardValue, cardColor] = inputContainer.querySelector('.js-card-input').value.split('_');
   const [tileValue, tileColor] = inputContainer.querySelector('.js-tile-input').value.split('_');
-  const cardTarget = { value: cardValue };
-  if (cardColor !== 'undefined') {
-    cardTarget.color = cardColor;
-  }
+  const parsedTileValue = parseInt(tileValue, 10);
+  const parsedCardValue = parseInt(cardValue, 10) || cardValue;
+  cardColor = cardColor === 'undefined' ? undefined : cardColor;
   window.fetch('/make_move/Lisa', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       kind,
-      cardTarget,
-      extra: extraForMove(kind, cardValue, cardColor, tileValue, tileColor),
+      cardTarget: { value: parsedCardValue, color: cardColor },
+      extra: extraForMove(kind, parsedCardValue, cardColor, parsedTileValue, tileColor),
     }),
   });
 }
@@ -83,21 +90,18 @@ function update() {
 }
 
 function play() {
-  const playButton = document.querySelector('.js-play-button');
-  playButton.disabled = true;
   window.fetch('/play').then((response) => {
     response.json().then((data) => {
       const gameLog = document.querySelector('.js-game-log');
       gameLog.innerHTML = `${formatMoves(data)} </br></br> ${gameLog.innerHTML}`;
       update();
-      playButton.disabled = false;
       play();
     });
   });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('.js-play-button').addEventListener('click', play);
+  boardView.$mount('#board');
   update();
   play();
 });
