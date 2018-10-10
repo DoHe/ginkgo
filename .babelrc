@@ -1,10 +1,18 @@
 {
     "presets": [
-        ["env", {
-            "targets": {
-                "browsers": ["last 2 versions", "safari >= 9", "ie >= 11", "iOS >= 8"]
-            },
-            "uglify": true
-        }]
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "browsers": [
+                        "last 2 versions",
+                        "safari >= 9",
+                        "ie >= 11",
+                        "iOS >= 8"
+                    ]
+                },
+                "useBuiltIns": "entry"
+            }
+        ]
     ]
 }

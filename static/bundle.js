@@ -1,13 +1,31 @@
-(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 ;(function(){
-'use strict';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-var piece = require('./piece.vue');
+const piece = require('./piece.vue');
 
 module.exports = {
   props: ['tiles'],
-  components: { piece: piece }
+  components: { piece },
 };
+
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
@@ -21,16 +39,22 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-38dac372", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-38dac372", __vue__options__)
+    hotAPI.reload("data-v-38dac372", __vue__options__)
   }
 })()}
-},{"./piece.vue":3,"vue":9,"vue-hot-reload-api":8}],2:[function(require,module,exports){
+},{"./piece.vue":3,"vue":10,"vue-hot-reload-api":9}],2:[function(require,module,exports){
 ;(function(){
-'use strict';
+//
+//
+//
+//
+//
+//
 
 module.exports = {
-  props: ['value']
+  props: ['value'],
 };
+
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
@@ -47,17 +71,36 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-c82e2f16", __vue__options__)
   }
 })()}
-},{"vue":9,"vue-hot-reload-api":8}],3:[function(require,module,exports){
+},{"vue":10,"vue-hot-reload-api":9}],3:[function(require,module,exports){
 ;(function(){
-'use strict';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-var tile = require('./tile.vue');
-var markerPiece = require('./markerPiece.vue');
+const tile = require('./tile.vue');
+const markerPiece = require('./markerPiece.vue');
 
 module.exports = {
   props: ['kind', 'color', 'value', 'ownerColor', 'resources'],
-  components: { markerPiece: markerPiece, tile: tile }
+  components: { markerPiece, tile },
 };
+
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
@@ -74,21 +117,23 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-4a17f64f", __vue__options__)
   }
 })()}
-},{"./markerPiece.vue":2,"./tile.vue":4,"vue":9,"vue-hot-reload-api":8}],4:[function(require,module,exports){
+},{"./markerPiece.vue":2,"./tile.vue":4,"vue":10,"vue-hot-reload-api":9}],4:[function(require,module,exports){
 ;(function(){
-'use strict';
+//
+//
+//
+//
+//
+//
 
 module.exports = {
   props: ['color', 'value', 'ownerColor', 'resources'],
   computed: {
-    colorClass: function colorClass() {
-      return 'bg--' + this.color;
-    },
-    ownerColorClass: function ownerColorClass() {
-      return 'ft--' + (this.owner_color || 'gray');
-    }
-  }
+  	colorClass() { return `bg--${this.color}`; },
+  	ownerColorClass() { return `ft--${this.owner_color || 'gray'}`; },
+  },
 };
+
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
@@ -105,8 +150,8 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-10f7815d", __vue__options__)
   }
 })()}
-},{"vue":9,"vue-hot-reload-api":8}],5:[function(require,module,exports){
-'use strict';
+},{"vue":10,"vue-hot-reload-api":9}],5:[function(require,module,exports){
+"use strict";
 
 var moveKinds = ['plan', 'urbanize', 'build_up'];
 
@@ -115,7 +160,7 @@ function isSpace(pieceData) {
 }
 
 function gridStyle(column, row) {
-  return 'style="grid-column: ' + (column + 1) + '; grid-row=' + (row + 1) + ';"';
+  return "style=\"grid-column: ".concat(column + 1, "; grid-row=").concat(row + 1, ";\"");
 }
 
 function formatBoardPiece(pieceData, column, row) {
@@ -126,26 +171,27 @@ function formatBoardPiece(pieceData, column, row) {
       resources = pieceData.resources;
 
   if (name === 'marker') {
-    return '<div class="circle bg--green" ' + gridStyle(column, row) + '>' + value + '</div>';
+    return "<div class=\"circle bg--green\" ".concat(gridStyle(column, row), ">").concat(value, "</div>");
   } else if (name === 'tile') {
-    return '<div class="rect bg--' + color + '" ' + gridStyle(column, row) + '>\n                ' + value + '/<span class="fnt--' + owner_color + '">' + resources + '</span>\n            </div>';
+    return "<div class=\"rect bg--".concat(color, "\" ").concat(gridStyle(column, row), ">\n                ").concat(value, "/<span class=\"fnt--").concat(owner_color, "\">").concat(resources, "</span>\n            </div>");
   }
+
   return '';
 }
 
 function formatTile(tileData) {
-  return '<div class="rect bg--' + tileData.color + '">' + tileData.value + '</div>';
+  return "<div class=\"rect bg--".concat(tileData.color, "\">").concat(tileData.value, "</div>");
 }
 
 function formatCard(cardData) {
-  var textClass = cardData.target.color ? 'fnt--' + cardData.target.color : '';
-  return '<div class="rect bg--green ' + textClass + '">' + cardData.target.value + '</div>';
+  var textClass = cardData.target.color ? "fnt--".concat(cardData.target.color) : '';
+  return "<div class=\"rect bg--green ".concat(textClass, "\">").concat(cardData.target.value, "</div>");
 }
 
 function formatRow(rowData, rowIndex) {
-  return '' + rowData.map(function (pieceData, column) {
+  return "".concat(rowData.map(function (pieceData, column) {
     return formatBoardPiece(pieceData, column, rowIndex);
-  }).join('');
+  }).join(''));
 }
 
 function formatBoard(boardData) {
@@ -160,30 +206,32 @@ function formatMove(move) {
   var kind = move[0];
   var details = move[1];
   var meta = '';
+
   if (kind === 'urbanize') {
-    meta = 'on ' + details.marker.value + ', moving to ' + details.direction;
+    meta = "on ".concat(details.marker.value, ", moving to ").concat(details.direction);
   } else if (kind === 'build_up') {
     kind = 'build';
-    meta = 'on top of ' + details.target_tile.color + ' ' + details.target_tile.value + ',\n                with ' + details.new_tile.color + ' ' + details.new_tile.value;
+    meta = "on top of ".concat(details.target_tile.color, " ").concat(details.target_tile.value, ",\n                with ").concat(details.new_tile.color, " ").concat(details.new_tile.value);
   } else if (kind === 'plan') {
     if (details.target_tile.name === 'marker') {
-      meta = 'on ' + details.target_tile.value + ' for ' + details.wish;
+      meta = "on ".concat(details.target_tile.value, " for ").concat(details.wish);
     } else {
-      meta = 'on ' + details.target_tile.color + ' ' + details.target_tile.value;
+      meta = "on ".concat(details.target_tile.color, " ").concat(details.target_tile.value);
     }
   }
-  return kind + ' ' + meta;
+
+  return "".concat(kind, " ").concat(meta);
 }
 
 function formatMoves(moveData) {
   return Object.keys(moveData).map(function (player) {
-    return player + ': ' + formatMove(moveData[player]);
+    return "".concat(player, ": ").concat(formatMove(moveData[player]));
   }).join('</br>');
 }
 
 function moveOptions() {
   return moveKinds.map(function (kind) {
-    return '<option value="' + kind + '">' + kind + '</option>';
+    return "<option value=\"".concat(kind, "\">").concat(kind, "</option>");
   });
 }
 
@@ -191,28 +239,40 @@ function pieceOptions(pieces) {
   return pieces.map(function (piece) {
     var value = piece.value || piece.target.value;
     var color = piece.color || piece.target.color;
-    return '<option value="' + value + '_' + color + '">' + value + (color ? ' (' + color + ')' : '') + '</option>';
+    return "<option value=\"".concat(value, "_").concat(color, "\">").concat(value).concat(color ? " (".concat(color, ")") : '', "</option>");
   }).join('\n');
 }
 
 function formatMoveInput(playerData) {
-  return '<div class="move-input">\n            <div class="move-input-option">\n              <span>Move</span>\n              <select class="js-move-input">\n                ' + moveOptions() + '\n              </select>\n            </div>\n            <div class="move-input-option">\n              <span>Card</span>\n              <select class="js-card-input">\n                ' + pieceOptions(playerData.hand) + '\n              </select>\n            </div>\n            <div class="move-input-option">\n              <span>Tile</span>\n              <select class="js-tile-input">\n                ' + pieceOptions(playerData.tiles) + '\n              </select>\n            </div>\n            <button class="js-execute-button btn--green">Execute</button>\n          </div>';
+  return "<div class=\"move-input\">\n            <div class=\"move-input-option\">\n              <span>Move</span>\n              <select class=\"js-move-input\">\n                ".concat(moveOptions(), "\n              </select>\n            </div>\n            <div class=\"move-input-option\">\n              <span>Card</span>\n              <select class=\"js-card-input\">\n                ").concat(pieceOptions(playerData.hand), "\n              </select>\n            </div>\n            <div class=\"move-input-option\">\n              <span>Tile</span>\n              <select class=\"js-tile-input\">\n                ").concat(pieceOptions(playerData.tiles), "\n              </select>\n            </div>\n            <button class=\"js-execute-button btn--green\">Execute</button>\n          </div>");
 }
 
 function formatPlayer(playerData) {
-  var player = '<span class="fnt--' + playerData.color + '">' + playerData.name + '</span>: \n                <span class="fnt--orange">' + playerData.victory_points + ' VPs</span>,\n                <span class="fnt--red">' + playerData.resources + ' resources</span>\n                <div class="piece-container">' + playerData.tiles.map(formatTile).join('') + '</div>\n                <div class="piece-container">' + playerData.hand.map(formatCard).join('') + '</div>';
+  var player = "<span class=\"fnt--".concat(playerData.color, "\">").concat(playerData.name, "</span>: \n                <span class=\"fnt--orange\">").concat(playerData.victory_points, " VPs</span>,\n                <span class=\"fnt--red\">").concat(playerData.resources, " resources</span>\n                <div class=\"piece-container\">").concat(playerData.tiles.map(formatTile).join(''), "</div>\n                <div class=\"piece-container\">").concat(playerData.hand.map(formatCard).join(''), "</div>");
+
   if (playerData.is_web) {
     player += formatMoveInput(playerData);
   }
+
   return player;
 }
 
-module.exports = { formatMoves: formatMoves, formatBoard: formatBoard, formatPlayer: formatPlayer };
+module.exports = {
+  formatMoves: formatMoves,
+  formatBoard: formatBoard,
+  formatPlayer: formatPlayer
+};
 
 },{}],6:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var Vue = require('vue');
 
@@ -226,7 +286,9 @@ var boardView = new Vue({
   data: {
     tiles: []
   },
-  components: { board: board }
+  components: {
+    board: board
+  }
 });
 
 function showBoard() {
@@ -240,21 +302,35 @@ function showBoard() {
 function extraForMove(kind, cardValue, cardColor, tileValue, tileColor) {
   if (kind === 'plan') {
     return {
-      target_tile: { value: cardValue, color: cardColor },
+      target_tile: {
+        value: cardValue,
+        color: cardColor
+      },
       wish: 'resource'
     };
   }
+
   if (kind === 'urbanize') {
     return {
       marker: cardValue,
       direction: 'up',
-      new_tile: { value: tileValue, color: tileColor }
+      new_tile: {
+        value: tileValue,
+        color: tileColor
+      }
     };
   }
+
   if (kind === 'build_up') {
     return {
-      target_tile: { value: cardValue, color: cardColor },
-      new_tile: { value: tileValue, color: tileColor }
+      target_tile: {
+        value: cardValue,
+        color: cardColor
+      },
+      new_tile: {
+        value: tileValue,
+        color: tileColor
+      }
     };
   }
 
@@ -280,25 +356,33 @@ function executeMove(event) {
   cardColor = cardColor === 'undefined' ? undefined : cardColor;
   window.fetch('/make_move/Lisa', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({
       kind: kind,
-      cardTarget: { value: parsedCardValue, color: cardColor },
+      cardTarget: {
+        value: parsedCardValue,
+        color: cardColor
+      },
       extra: extraForMove(kind, parsedCardValue, cardColor, parsedTileValue, tileColor)
     })
   });
 }
 
 function showPlayer(playerName) {
-  window.fetch('/players/' + playerName).then(function (response) {
+  window.fetch("/players/".concat(playerName)).then(function (response) {
     response.json().then(function (data) {
-      var player = document.querySelector('.js-player[data-player-name=' + playerName + ']');
+      var player = document.querySelector(".js-player[data-player-name=".concat(playerName, "]"));
+
       if (player) {
         player.innerHTML = formatPlayer(data);
       } else {
-        document.querySelector('.js-players').innerHTML += '<div class="player js-player" data-player-name="' + data.name + '">' + formatPlayer(data) + '</div>';
+        document.querySelector('.js-players').innerHTML += "<div class=\"player js-player\" data-player-name=\"".concat(data.name, "\">").concat(formatPlayer(data), "</div>");
       }
-      var executeButton = document.querySelector('.js-player[data-player-name=' + playerName + '] .js-execute-button');
+
+      var executeButton = document.querySelector(".js-player[data-player-name=".concat(playerName, "] .js-execute-button"));
+
       if (executeButton) {
         executeButton.addEventListener('click', executeMove);
       }
@@ -323,7 +407,7 @@ function play() {
   window.fetch('/play').then(function (response) {
     response.json().then(function (data) {
       var gameLog = document.querySelector('.js-game-log');
-      gameLog.innerHTML = formatMoves(data) + ' </br></br> ' + gameLog.innerHTML;
+      gameLog.innerHTML = "".concat(formatMoves(data), " </br></br> ").concat(gameLog.innerHTML);
       update();
       play();
     });
@@ -336,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
   play();
 });
 
-},{"./components/board.vue":1,"./helpers/formatting":5,"vue":9}],7:[function(require,module,exports){
+},{"./components/board.vue":1,"./helpers/formatting":5,"vue":10}],7:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -523,6 +607,85 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],8:[function(require,module,exports){
+(function (setImmediate,clearImmediate){
+var nextTick = require('process/browser.js').nextTick;
+var apply = Function.prototype.apply;
+var slice = Array.prototype.slice;
+var immediateIds = {};
+var nextImmediateId = 0;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) { timeout.close(); };
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(window, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// That's not how node.js implements it but the exposed api is the same.
+exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
+  var id = nextImmediateId++;
+  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+
+  immediateIds[id] = true;
+
+  nextTick(function onNextTick() {
+    if (immediateIds[id]) {
+      // fn.call() is faster so we optimize for the common use-case
+      // @see http://jsperf.com/call-apply-segu
+      if (args) {
+        fn.apply(null, args);
+      } else {
+        fn.call(null);
+      }
+      // Prevent ids from leaking
+      exports.clearImmediate(id);
+    }
+  });
+
+  return id;
+};
+
+exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
+  delete immediateIds[id];
+};
+}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
+},{"process/browser.js":7,"timers":8}],9:[function(require,module,exports){
 var Vue // late bind
 var version
 var map = (window.__VUE_HOT_MAP__ = Object.create(null))
@@ -764,10 +927,10 @@ exports.reload = tryWrap(function (id, options) {
   })
 })
 
-},{}],9:[function(require,module,exports){
-(function (process,global){
+},{}],10:[function(require,module,exports){
+(function (process,global,setImmediate){
 /*!
- * Vue.js v2.5.16
+ * Vue.js v2.5.17
  * (c) 2014-2018 Evan You
  * Released under the MIT License.
  */
@@ -5858,7 +6021,7 @@ Object.defineProperty(Vue, 'FunctionalRenderContext', {
   value: FunctionalRenderContext
 });
 
-Vue.version = '2.5.16';
+Vue.version = '2.5.17';
 
 /*  */
 
@@ -11727,5 +11890,5 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":7}]},{},[6]);
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
+},{"_process":7,"timers":8}]},{},[6]);

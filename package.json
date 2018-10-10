@@ -3,18 +3,18 @@
   "version": "1.0.0",
   "main": "static/bundle.js",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babelify": "^8.0.0",
-    "browserify": "^16.1.1",
-    "eslint": "^4.18.2",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0",
-    "eslint-plugin-vue": "^4.4.0",
-    "eslint_d": "^5.2.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-vue": "^4.7.1",
+    "eslint_d": "^7.1.1",
     "vueify": "^9.4.1",
     "watchify": "^3.11.0"
   },
@@ -34,7 +34,8 @@
     ]
   },
   "dependencies": {
-    "vue": "^2.5.16"
+    "vue": "^2.5.17",
+    "vue-template-compiler": "^2.5.17"
   },
   "browser": {
     "vue": "vue/dist/vue.common.js"
